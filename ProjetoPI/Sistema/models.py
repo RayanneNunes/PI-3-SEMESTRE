@@ -507,11 +507,11 @@ class Profile(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     tipo = models.CharField(max_length=20, choices=TIPOS_USUARIO)
-    telefone = models.CharField(max_length=15, blank=True, null=True)
-    obra = models.ForeignKey(Obra, on_delete=models.SET_NULL, null=True, blank=True)
-    foto = models.ImageField(upload_to='fotos_perfil/', null=True, blank=True)
-    data_criacao = models.DateTimeField(auto_now_add=True)
+   
+
+    
 
     def __str__(self):
         return f'{self.user.username} ({self.get_tipo_display()})'
+
  
