@@ -5,37 +5,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Colaborador</title>
+    <title>Cadastro de Colaborador</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <style>
-        .form-container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        .form-section {
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+        .form-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 1rem;
         }
         .form-group {
-            margin-bottom: 15px;
+            flex: 1;
+            margin-bottom: 1rem;
         }
         label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 0.5rem;
             font-weight: bold;
+        }
+        label.required::after {
+            content: " *";
+            color: #dc3545;
         }
         input, select, textarea {
             width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
+            padding: 0.5rem;
+            border: 1px solid #ced4da;
             border-radius: 4px;
         }
         .btn {
-            padding: 8px 15px;
+            padding: 0.5rem 1rem;
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            margin-right: 10px;
+            margin-right: 0.5rem;
+            text-decoration: none;
+            display: inline-block;
         }
         .btn-primary {
             background-color: #007bff;
@@ -45,71 +55,177 @@
             background-color: #6c757d;
             color: white;
         }
+        .errorlist {
+            color: #dc3545;
+            margin-top: 0.5rem;
+            padding-left: 0;
+            list-style: none;
+        }
+        .alert {
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 4px;
+        }
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
     </style>
 </head>
 <body>
 
-<!-- Inclua sua navbar/sidebar aqui conforme seu template base -->
+<!-- Sidebar (mantido igual) -->
+<div class="sidebar">
+    <!-- Ícone do usuário -->
+    <div class="logout-container">
+        <img src="{% static 'images/white version/user.png' %}" alt="Ícone do usuário" height="65" width="65"
+             style="display: flex; margin:auto; margin-bottom: 55px; margin-top: 90px;">
 
-<div class="content">
-    <div class="form-container">
-        <h1>Editar Colaborador: {{ colaborador.nome }}</h1>
-        
-        <form method="POST">
+        <!-- Botão de sair -->
+        <form method="POST" action="{% url 'logout' %}">
             {% csrf_token %}
+            <button type="submit" class="sair-btn">
+                <img src="{% static 'images/logout.png' %}" alt="Sair" height="15" width="15">
+                Sair
+            </button>
+        </form>
+    </div>
+
+    <!-- Links do menu -->
+    <label>Navegação</label>
+    <hr>
+    <a href="{% url 'home' %}">
+        <img src="{% static 'images/white version/inicio.png' %}" alt="Início" height="20" width="20"
+             style="margin-right: 10px;margin-left: 10px;">
+        INÍCIO
+    </a>
+
+    <a href="{% url 'listar-colaboradores' %}" class="active">
+        <img src="{% static 'images/white version/func.png' %}" alt="Colaboradores" height="20" width="20"
+             style="margin-right: 10px;margin-left: 10px;">
+        COLABORADORES
+    </a>
+
+    <a href="{% url 'listar-restaurantes' %}">
+        <img src="{% static 'images/white version/rest.png' %}" alt="Restaurantes" height="20" width="20"
+             style="margin-right: 10px;margin-left: 10px;">
+        RESTAURANTES
+    </a>
+
+    <a href="{% url 'listar-obras' %}">
+        <img src="{% static 'images/white version/obra.png' %}" alt="Obras" height="20" width="20"
+             style="margin-right: 10px;margin-left: 10px;">
+        OBRAS
+    </a>
+
+    <a href="{% url 'listar-hoteis' %}">
+        <img src="{% static 'images/white version/hotel.png' %}" alt="Hotéis" height="20" width="20"
+             style="margin-right: 10px;margin-left: 10px;">
+        HOTÉIS
+    </a>
+
+    <a href="{% url 'cadastrar_usuario' %}">
+        <img src="{% static 'images/white version/usuario.png' %}" alt="Usuários" height="20" width="20"
+             style="margin-right: 10px;margin-left: 10px;">
+        USUÁRIOS
+    </a>
+
+    <a href="{% url 'relatorio' %}">
+        <img src="{% static 'images/white version/dash.png' %}" alt="Dashboard" height="20" width="20"
+             style="margin-right: 10px;margin-left: 10px;">
+        DASHBOARD
+    </a>
+</div>
+
+<!-- Conteúdo principal -->
+<div class="corpo">
+    <h1>
+        <img src="{% static 'images/blue version/safety-plus.png' %}" alt="Logo" height="50" width="55"
+             style="margin-right: 15px;">
+        Editar Colaborador
+    </h1>
+
+    <!-- Mensagens -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{% if message.tags == 'error' %}error{% else %}{{ message.tags }}{% endif %}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="POST" novalidate>
+        {% csrf_token %}
+        
+        <!-- Dados Pessoais -->
+        <div class="form-section">
+            <h2>Dados Pessoais</h2>
             
-            <!-- Dados Pessoais -->
-            <div class="form-section">
-                <h2>Dados Pessoais</h2>
-                
+            <div class="form-group">
+                <label for="id_nome" class="required">Nome completo</label>
+                <input type="text" id="id_nome" name="nome" value="{{ form.nome.value|default_if_none:'' }}" required>
+                {{ form.nome.errors }}
+            </div>
+            
+            <div class="form-row">
                 <div class="form-group">
-                    <label for="id_nome">Nome completo</label>
-                    {{ form.nome }}
-                    {{ form.nome.errors }}
-                </div>
-                
-                <div class="form-group">
-                    <label for="id_cpf">CPF</label>
-                    {{ form.cpf }}
+                    <label for="id_cpf" class="required">CPF</label>
+                    <input type="text" id="id_cpf" name="cpf" value="{{ form.cpf.value|default_if_none:'' }}" 
+                           placeholder="000.000.000-00" required>
                     {{ form.cpf.errors }}
                 </div>
                 
                 <div class="form-group">
-                    <label for="id_data_nascimento">Data de nascimento</label>
-                    {{ form.data_nascimento }}
+                    <label for="id_data_nascimento" class="required">Data de nascimento</label>
+                    <input type="date" id="id_data_nascimento" name="data_nascimento" 
+                           value="{{ form.data_nascimento.value|default_if_none:'' }}" required>
                     {{ form.data_nascimento.errors }}
                 </div>
-                
-                <div class="form-group">
-                    <label for="id_telefone">Telefone</label>
-                    {{ form.telefone }}
-                    {{ form.telefone.errors }}
-                </div>
-                
-                <div class="form-group">
-                    <label for="id_endereco">Endereço</label>
-                    {{ form.endereco }}
-                    {{ form.endereco.errors }}
-                </div>
             </div>
             
-            <!-- Dados Profissionais -->
-            <div class="form-section">
-                <h2>Dados Profissionais</h2>
-                
-                <div class="form-group">
-                    <label for="id_obra">Obra Vinculada</label>
-                    {{ form.obra }}
-                    {{ form.obra.errors }}
-                </div>
+            <div class="form-group">
+                <label for="id_telefone" class="required">Telefone</label>
+                <input type="text" id="id_telefone" name="telefone" 
+                       value="{{ form.telefone.value|default_if_none:'' }}" 
+                       placeholder="(00) 00000-0000" required>
+                {{ form.telefone.errors }}
             </div>
             
-            <div class="form-actions">
-                <button type="submit" class="btn btn-primary">Salvar Alterações</button>
-                <a href="{% url 'listar-colaboradores' %}" class="btn btn-secondary">Cancelar</a>
+            <div class="form-group">
+                <label for="id_endereco" class="required">Endereço</label>
+                <input type="text" id="id_endereco" name="endereco" value="{{ form.endereco.value|default_if_none:'' }}" required>
+                {{ form.endereco.errors }}
             </div>
-        </form>
-    </div>
+        </div>
+        
+        <!-- Dados Profissionais -->
+        <div class="form-section">
+            <h2>Dados Profissionais</h2>
+            
+            <div class="form-group">
+                <label for="id_obra" class="required">Obra Vinculada</label>
+                <select id="id_obra" name="obra" required>
+                    <option value="">Selecione a obra</option>
+                    {% for obra in obras %}
+                        <option value="{{ obra.id }}" 
+                                {% if form.obra.value == obra.id|stringformat:"s" %}selected{% endif %}>
+                            {{ obra.nome }}
+                        </option>
+                    {% endfor %}
+                </select>
+                {{ form.obra.errors }}
+            </div>
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Salvar Alterações </button>
+            <a href="{% url 'listar-colaboradores' %}" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
 </div>
 
 <script>

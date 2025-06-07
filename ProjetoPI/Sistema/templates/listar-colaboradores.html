@@ -3,206 +3,86 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Colaboradores</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            display: flex;
-            min-height: 100vh;
-            background-color: #f5f5f5;
-        }
-        
-        /* Navbar Estilo */
-        .navbar {
-            width: 250px;
-            background-color: #2c3e50;
-            color: white;
-            padding: 30px 20px;
-            position: fixed;
-            height: 100%;
-        }
-        
-        .navbar h2 {
-            color: #ecf0f1;
-            margin-bottom: 30px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #34495e;
-        }
-        
-        .nav-menu {
-            list-style: none;
-        }
-        
-        .nav-menu li {
-            margin-bottom: 15px;
-        }
-        
-        .nav-menu a {
-            color: #bdc3c7;
-            text-decoration: none;
-            font-size: 16px;
-            display: block;
-            padding: 8px 10px;
-            border-radius: 4px;
-            transition: all 0.3s;
-        }
-        
-        .nav-menu a:hover {
-            background-color: #34495e;
-            color: white;
-        }
-        
-        .nav-menu a.active {
-            background-color: #3498db;
-            color: white;
-        }
-        
-        /* Conteúdo Principal */
-        .main-content {
-            flex: 1;
-            margin-left: 250px;
-            padding: 30px;
-        }
-        
-        .page-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-        
-        .page-header h1 {
-            font-size: 24px;
-            color: #2c3e50;
-        }
-        
-        /* Tabela de Colaboradores */
-        .table-container {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            overflow-x: auto;
-        }
-        
-        .styled-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 14px;
-            min-width: 800px;
-        }
-        
-        .styled-table th {
-            background-color: #2c3e50;
-            color: white;
-            text-align: left;
-            padding: 12px 15px;
-            position: sticky;
-            top: 0;
-        }
-        
-        .styled-table td {
-            padding: 12px 15px;
-            border-bottom: 1px solid #ddd;
-        }
-        
-        .styled-table tr:nth-child(even) {
-            background-color: #f8f9fa;
-        }
-        
-        .styled-table tr:hover {
-            background-color: #f1f1f1;
-        }
-        
-        .text-center {
-            text-align: center;
-        }
-        
-        /* Botões */
-        .action-buttons {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        
-        .btn {
-            padding: 10px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.3s;
-        }
-        
-        .btn-primary {
-            background-color: #3498db;
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            background-color: #2980b9;
-        }
-        
-        .btn-secondary {
-            background-color: #6c757d;
-            color: white;
-        }
-        
-        .btn-secondary:hover {
-            background-color: #5a6268;
-        }
-        
-        .btn-danger {
-            background-color: #e74c3c;
-            color: white;
-        }
-        
-        .btn-danger:hover {
-            background-color: #c0392b;
-        }
-        
-        .btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-        
-        /* Mensagem vazia */
-        .empty-message {
-            text-align: center;
-            padding: 30px;
-            color: #7f8c8d;
-            font-style: italic;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
-<body>
 
-<!-- Navbar Lateral -->
-<div class="navbar">
-    <h2>Navegação</h2>
-    <ul class="nav-menu">
-        <li><a href="{% url 'home' %}">INÍCIO</a></li>
-        <li><a href="{% url 'listar-colaboradores' %}" class="active">COLABORADORES</a></li>
-        <li><a href="{% url 'listar-restaurantes' %}">RESTAURANTES</a></li>
-        <li><a href="{% url 'listar-obras' %}">OBRAS</a></li>
-        <li><a href="{% url 'listar-hoteis' %}">HOTÉIS</a></li>
-    </ul>
-</div>
+<body>
+  <!-- Sidebar -->
+  
+  <div class="sidebar">
+    <!-- Ícone do usuário -->
+     <div class="logout-container">
+    <img src="{% static 'images/white version/user.png' %}" alt="error" height="65px" width="65px" style="display: flex; margin:auto; margin-bottom: 55px; margin-top: 90px;">
+
+    <!-- Botão de sair abaixo do ícone -->
+    
+      <form method="POST" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit" class="sair-btn">
+          <img src="{% static 'images/logout.png' %}" alt="error" height="15px" width="15px">
+          Sair
+        </button>
+      </form>
+    </div>
+
+    <!-- Links do menu -->
+
+    <label>Navegeção</label>
+    <hr>
+    <a href="{% url 'home' %}">
+      <img src="{% static 'images/white version/inicio.png' %}" alt="error" height="20px" width="20px" style="margin-right: 10px;margin-left: 10px;">
+      INICIO
+    </a>
+
+    <a href="{% url 'listar-colaboradores' %}"class="active">
+      <img src="{% static 'images/white version/func.png' %}" alt="error" height="20px" width="20px" style="margin-right: 10px;margin-left: 10px;">
+      COLABORADORES
+    </a>
+
+    <a href="{% url 'listar-restaurantes' %}">
+      <img src="{% static 'images/white version/rest.png' %}" alt="error" height="20px" width="20px" style="margin-right: 10px;margin-left: 10px;">
+      RESTAURANTES
+    </a>
+
+    <a href="{% url 'listar-obras' %}">
+      <img src="{% static 'images/white version/obra.png' %}" alt="error" height="20px" width="20px" style="margin-right: 10px;margin-left: 10px;">
+      OBRAS
+    </a>
+
+    <a href="{% url 'listar-hoteis' %}">
+      <img src="{% static 'images/white version/hotel.png' %}" alt="error" height="20px" width="20px" style="margin-right: 10px;margin-left: 10px;">
+      HOTÉIS
+    </a>
+
+    <a href="{% url 'cadastrar_usuario' %}">
+      <img src="{% static 'images/white version/usuario.png' %}" alt="error" height="20px" width="20px" style="margin-right: 10px;margin-left: 10px;">
+      USUÁRIOS
+    </a>
+
+    <a href="{% url 'relatorio' %}">
+      <img src="{% static 'images/white version/dash.png' %}" alt="error" height="20px" width="20px" style="margin-right: 10px;margin-left: 10px;">
+      DASHBOARD
+    </a>
+  </div>
+
+  <!-- Conteúdo principal -->
+  <img src="{% static 'images/paintocode.png' %}" alt="erro" style="position: fixed; bottom: 0; right: 0; width: 130px; height: 37px; margin-right: 5px;">
+
+<div class="corpo">
+<a href="{% url 'cadastro' %}">
+    <img src="{% static 'imagens/blue_version/plus.png' %}" alt="error" height="20px" width="20px" style="margin-right: 10px;margin-left: 10px;">
+    CADASTRAR COLABORADOR
+  </a>
+  </div>
 
 <!-- Conteúdo Principal -->
-<div class="main-content">
+<div class="corpo">
     <div class="page-header">
         <h1>Lista de Colaboradores</h1>
     </div>
     
-    <div class="action-buttons">
+    <div class="right-buttons">
         <a href="{% url 'cadastro' %}" class="btn btn-primary">Cadastrar Novo</a>
         <button id="btn-editar" class="btn btn-secondary" disabled>Editar</button>
         <button id="btn-excluir" class="btn btn-danger" disabled>Excluir</button>
@@ -222,7 +102,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for colaborador in colaborador %}
+                {% for colaborador in colaboradores %}
                 <tr>
                     <td class="text-center"><input type="radio" name="selecionado" value="{{ colaborador.id }}"></td>
                     <td>{{ colaborador.nome }}</td>
